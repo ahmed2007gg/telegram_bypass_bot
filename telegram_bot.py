@@ -1,4 +1,4 @@
-
+import os
 import requests
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, filters
@@ -47,7 +47,14 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # الإعدادات للبوت
 def main():
-    application = Application.builder().token("YOUR_BOT_TOKEN").build()
+    # قراءة التوكن من متغير البيئة
+    TOKEN = os.getenv("BOT_TOKEN")
+    
+    if not TOKEN:
+        print("لم يتم العثور على التوكن. يرجى تحديده في المتغيرات البيئية.")
+        return
+
+    application = Application.builder().token(TOKEN).build()
 
     # إضافة مستمعين للأوامر
     application.add_handler(CommandHandler("start", show_options))
